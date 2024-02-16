@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = require('../util/path');
+const path = require('path');
 
 const p = path.join(
     path.dirname(require.main.filename),
@@ -13,6 +13,7 @@ module.exports = class Cart {
 
         fs.readFile(p, (err, fileContent) => {
             let cart = { products: [], totalPrice: 0 };
+
             if (!err) {
                 cart = JSON.parse(fileContent);
             }
@@ -23,12 +24,12 @@ module.exports = class Cart {
             if (exsistingProduct) {
                 updatedProduct = {...exsistingProduct};
                 updatedProduct.qty = updatedProduct.qty + 1;
-                cart.products = [...cart.products];
+                cart.products[existingProductIndex] = updatedProduct;
             } else {
                 updatedProduct = {id: id, qty: 1};
                 cart.products = [...cart.products, updatedProduct];
             }
-            cart.totalPrice = cart.totalPrice + productPrice;
+            cart.totalPrice = parseInt(cart.totalPrice) + parseInt(productPrice);
             fs.writeFile(p, JSON.stringify(cart), err => {
                 console.log(err);
             });

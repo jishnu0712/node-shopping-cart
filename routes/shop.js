@@ -14,14 +14,7 @@ router.get("/products/:productId", shopController.getProduct);
 
 router.get("/cart", shopController.getCart);
 
-router.post("/cart", (req, res, next) => {
-  const productId = req.body.productId;
-  console.log(productId);
-  res.render("shop/cart", {
-    path: "/cart",
-    pageTitle: "Your Cart",
-  });
-});
+router.post("/cart", shopController.postCart);
 
 router.get("/orders", shopController.getOrders);
 
