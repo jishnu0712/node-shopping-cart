@@ -12,6 +12,12 @@ router.get('/add-product', adminController.getAddProduct);
 // /admin/products => GET
 router.get('/products', adminController.getProducts);
 
+// /admin/products/:productId => GET
+router.get('/products/:productId', adminController.editProduct);
+
+// /admin/products/:productId => POST
+router.post('/products/:productId', adminController.updateProduct);
+
 // /admin/add-product => POST
 router.post('/add-product', adminController.postAddProduct);
 
