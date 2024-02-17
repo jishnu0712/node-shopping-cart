@@ -57,4 +57,15 @@ module.exports = class Product {
       });
     });
   }
+
+  static deleteProduct(id) {
+    getProductsFromFile(products => {
+      const newArrayAfterDeletion = products.filter(p => p.id !== id);
+
+      fs.writeFile(p, JSON.stringify(newArrayAfterDeletion), err => {
+        console.log(err);
+      });
+    });
+  }
+
 };
