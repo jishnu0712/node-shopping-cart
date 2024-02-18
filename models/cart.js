@@ -38,4 +38,14 @@ module.exports = class Cart {
         // add / increment cart
 
     }
+
+    static getAllCartItems(cb) {
+        fs.readFile(p, (err, fileContent) => {
+            if (err) {
+                cb([]);
+            } else {
+                cb(JSON.parse(fileContent));
+            }
+        });
+    }
 }
