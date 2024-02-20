@@ -15,23 +15,31 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(title, imageUrl, description, price);
-  product
-    .save()
-    .then(() => {
+  
+  Product
+    .create({
+      title: title,
+      imageUrl: imageUrl,
+      price: price,
+      description: description
+    })
+    .then((result) => {
+      console.log('Saved successfully');
       res.redirect("/");
     })
     .catch((err) => console.log(err));
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render("admin/products", {
-      prods: products,
-      pageTitle: "Admin Products",
-      path: "/admin/products",
-    });
-  });
+  Product.findAll()
+    .then(products => {
+      res.render("admin/products", {
+        prods: products,
+        pageTitle: "Admin Products",
+        path: "/admin/products",
+      });
+    })
+    .catch(err => console.log(err))
 };
 
 exports.editProduct = (req, res, next) => {
