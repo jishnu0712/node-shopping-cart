@@ -67,7 +67,7 @@ exports.updateProduct = (req, res, next) => {
       product.price = price;
       return product.save();
     })
-    .then((res) => {
+    .then((result) => {
       console.log("product updated");
       res.redirect("/products");
     })
