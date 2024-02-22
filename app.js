@@ -1,5 +1,7 @@
 const path = require("path");
 
+import serverless from "serverless-http"; // netlify dependency
+
 const express = require("express");
 const bodyParser = require("body-parser");
 
@@ -58,6 +60,7 @@ sequelize
   })
   .then((res) => {
     console.log(res);
-    app.listen(3000);
+    // app.listen(3000);
+    const handler = serverless(api);
   })
   .catch((err) => console.log(err));
