@@ -1,9 +1,8 @@
-const path = require("path");
-
-import serverless from "serverless-http"; // netlify dependency
+import serverless from "serverless-http"; // Importing serverless-http package
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require("path");
 
 const Product = require("./models/product");
 const User = require("./models/user");
@@ -47,7 +46,6 @@ Cart.belongsToMany(Product, { through: CartItem });
 Product.belongsToMany(Cart, { through: CartItem });
 
 sequelize
-  // .sync({ force: true })
   .sync()
   .then(() => {
     return User.findByPk(1);
@@ -60,7 +58,11 @@ sequelize
   })
   .then((res) => {
     console.log(res);
-    // app.listen(3000);
-    const handler = serverless(api);
+    // Start the serverless handler after setting up all the routes and middleware
+    const handler = serverless(app);
+    module.exports.handler = async (event, context) => {
+      // Your serverless function entry point
+      return await handler(event, context);
+    };
   })
   .catch((err) => console.log(err));
