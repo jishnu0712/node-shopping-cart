@@ -45,11 +45,10 @@ exports.getCart = (req, res, next) => {
       return cart
         .getProducts()
         .then((products) => {
-          // console.log(products);
           res.render("shop/cart", {
             path: "/cart",
             pageTitle: "Your Cart",
-            cartItems: products,
+            products: products,
           });
         })
         .catch((err) => console.log(err));
