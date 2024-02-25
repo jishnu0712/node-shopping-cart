@@ -6,9 +6,9 @@
         <%- include('../includes/end.ejs') %>
       
         
-        <% if (cartItems.products.length > 0) { %>
+        <% if (cartItems.length > 0) { %>
             <ul>
-                <% cartItems.products.forEach(item => { %>
+                <% cartItems.forEach(item => { %>
                     <li><%= item['id'] %></li>
                 <% }); %>
             </ul>
