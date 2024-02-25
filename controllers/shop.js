@@ -60,7 +60,7 @@ exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
   let fetchedCart;
   let newQuantity = 1;
-  
+
   req.user
     .getCart()
     .then((cart) => {
@@ -88,6 +88,22 @@ exports.postCart = (req, res, next) => {
     .catch((err) => console.log(err));
 
   res.redirect("/cart");
+};
+
+exports.postCartDeleteProduct = (req, res, next) => {
+  const prodId = req.body.productId;
+  req.user.getCart()
+  .then(cart => {
+    return cart.getProducts({where: {id: prodId}});
+  })
+  .then(products => {
+    let product = products[0];
+    product.cartItem.destroy();
+  })
+  .then(result => {
+    res.redirect('/cart');
+  })
+  .catch(err => console.log(err));
 };
 
 exports.getOrders = (req, res, next) => {
