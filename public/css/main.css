@@ -200,7 +200,7 @@ form {
 
 .cart__item {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   padding: 4px 16px;
   margin: 1rem;

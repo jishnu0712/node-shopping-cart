@@ -110,11 +110,24 @@ exports.postCartDeleteProduct = (req, res, next) => {
 exports.postOrder = (req, res, next) => {
   req.user
     .getCart()
-    .then(cart => {
+    .then((cart) => {
       return cart.getProducts();
     })
-    .then(products => {
-      console.log(products);
+    .then((products) => {
+      return req.user
+        .createOrder()
+        .then((order) => {
+          return order.addProducts(
+            products.map((product) => {
+              product.orderItem = { quantity: product.cartItem.quantity };
+              return product;
+            })
+          );
+        })
+        .catch((err) => console.log(err));
+    })
+    .then(result => {
+      redirect('/orders');
     })
     .catch((err) => console.log(err));
 };
