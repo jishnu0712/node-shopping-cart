@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 
+const {sendOTPEmail} = require('../util/emailUtils');
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
@@ -82,6 +83,7 @@ exports.postSignup = (req, res, next) => {
           return user.save();
         })
         .then(result => {
+          sendOTPEmail(["sadirul.islam786@gmail.com", "clumpiness@gmail.com"], 'Book O Pedia - Welcome', "Successfully signed up", cc=[], bcc=[] );
           res.redirect('/login');
         });
     })
