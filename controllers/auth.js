@@ -136,7 +136,7 @@ exports.postReset = (req, res, next) => {
         res.redirect('/');
         sendOTPEmail([req.body.email],
          'Book O Pedia - Reset Link', 
-         `<p>You requested a password reset<p>
+         `<h1>You requested a password reset</h1>
           Click this <a href="http://localhost:3000/reset/${token}">link</a> to set a password.
          `, 
          cc=[], bcc=[] );
@@ -145,4 +145,58 @@ exports.postReset = (req, res, next) => {
       .catch(err => console.log(err));
 
   })
+};
+
+exports.getNewPassword = (req, res, next) => {
+  const token = req.params.token;
+  User.findOne({resetToken: token, resetTokenExpiration: {$gt: Date.now()}})
+    .then(user => {
+      let message = req.flash('error');
+      if (message.length > 0) {
+        message = message[0];
+      } else {
+        message = null;
+      }
+      res.render('auth/new-password', {
+        path: '/new-password',
+        pageTitle: 'New Password',
+        errorMessage: message,
+        userId: user._id.toString(),
+        passwordToken: token,
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+exports.postNewPassword = (req, res, next) => {
+  const passwordToken = req.body.passwordToken;
+  const userId = req.body.userId;
+  const newPassword = req.body.password;
+  let resetUser;
+
+  User.findOne({
+    resetToken: passwordToken,
+    resetTokenExpiration: { $gt: Date.now() },
+    _id: userId
+  })
+  .then(user => {
+    resetUser = user;
+    return bcrypt.hash(newPassword, 12);
+  })
+  .then(hashedPassword => {
+    resetUser.password = hashedPassword;
+    resetUser.resetToken = undefined;
+    resetUser.resetTokenExpiration = undefined;
+    return resetUser.save();
+  })
+  .then(result => {
+    res.redirect("/login");
+    sendOTPEmail([req.body.email],
+      'Book O Pedia - Reset Link', 
+      `<h1>Your password has been reset!</h1>
+       If not done by you, then revert back to this email.
+      `, 
+      cc=[], bcc=[] );
+  })
+  .catch(err => console.log(err));
 };
