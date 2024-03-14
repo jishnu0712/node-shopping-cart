@@ -67,7 +67,7 @@ app.use(errorController.get404);
 mongoose
   .connect(MONGODB_URI)
   .then(result => {
-    app.listen(3000, console.log('server started'));
+    app.listen(3000, console.log('server started at 3000'));
   })
   .catch(err => {
     console.log(err);
