@@ -30,7 +30,7 @@ exports.postAddProduct = (req, res, next) => {
     return res.status(422).render('admin/edit-product', {
       pageTitle: 'Edit Product',
       path: '/admin/edit-product',
-      editing: true,
+      editing: false,
       hasError: true,
       product: {
         title: title,
@@ -79,6 +79,7 @@ exports.getEditProduct = (req, res, next) => {
         editing: editMode,
         product: product,
         errorMessage: null,
+        validationErrors: [],
       });
     })
     .catch(err => console.log(err));
@@ -92,23 +93,23 @@ exports.postEditProduct = (req, res, next) => {
   const updatedDesc = req.body.description;
 
   const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        console.log(errors)
-        return res.status(422).render('admin/edit-product', {
-          pageTitle: 'Edit Product',
-          path: '/admin/edit-product',
-          editing: true,
-          hasError: true,
-          product: {
-            title: updatedTitle,
-            imageUrl: updatedImageUrl,
-            price: updatedPrice,
-            description: updatedDesc,
-          },
-          validationErrors: errors.array(),
-          errorMessage: errors.array()[0].msg,
-        });
-      }
+  if (!errors.isEmpty()) {
+    console.log(errors)
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Edit Product',
+      path: '/admin/edit-product',
+      editing: true,
+      hasError: true,
+      product: {
+        title: updatedTitle,
+        imageUrl: updatedImageUrl,
+        price: updatedPrice,
+        description: updatedDesc,
+      },
+      validationErrors: errors.array(),
+      errorMessage: errors.array()[0].msg,
+    });
+  }
 
   Product.findById(prodId)
     .then(product => {
