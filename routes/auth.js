@@ -21,7 +21,7 @@ router.post(
       "Please enter a password with alpha numeric characters and minimum length 4"
     )
       .isAlphanumeric()
-      .isLength({ min: 4 }),
+      .isLength({ min: 3 }),
   ],
   authController.postLogin
 );
@@ -49,7 +49,7 @@ router.post(
       "password",
       "Please enter a password with alpha numeric characters and minimum length 4"
     )
-      .isLength({ min: 4 })
+      .isLength({ min: 3 })
       .isAlphanumeric(),
     body("confirmPassword").custom((value, { req }) => {
       if (value !== req.body.password) {
