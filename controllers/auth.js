@@ -137,7 +137,7 @@ exports.postSignup = (req, res, next) => {
     })
     .then((result) => {
       sendOTPEmail(
-        ["sadirul.islam786@gmail.com", "clumpiness@gmail.com"],
+        [email],
         "Book O Pedia - Welcome",
         "Successfully signed up",
         (cc = []),
