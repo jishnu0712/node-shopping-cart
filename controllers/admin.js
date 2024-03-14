@@ -12,6 +12,8 @@ exports.getAddProduct = (req, res, next) => {
       price: '',
       description: ''
     },
+    errorMessage: '',
+    hasError: false,
     validationErrors: []
   });
 };
@@ -24,17 +26,20 @@ exports.postAddProduct = (req, res, next) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.render('admin/edit-product', {
-      pageTitle: 'Add Product',
-      path: '/admin/add-product',
-      editing: false,
-      oldInput: {
+    console.log(errors)
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Edit Product',
+      path: '/admin/edit-product',
+      editing: true,
+      hasError: true,
+      product: {
         title: title,
         imageUrl: imageUrl,
         price: price,
-        description: description
+        description: description,
       },
-      validationErrors: errors.array()
+      validationErrors: errors.array(),
+      errorMessage: errors.array()[0].msg,
     });
   }
 
@@ -72,7 +77,8 @@ exports.getEditProduct = (req, res, next) => {
         pageTitle: 'Edit Product',
         path: '/admin/edit-product',
         editing: editMode,
-        product: product
+        product: product,
+        errorMessage: null,
       });
     })
     .catch(err => console.log(err));
@@ -84,6 +90,25 @@ exports.postEditProduct = (req, res, next) => {
   const updatedPrice = req.body.price;
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
+
+  const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        console.log(errors)
+        return res.status(422).render('admin/edit-product', {
+          pageTitle: 'Edit Product',
+          path: '/admin/edit-product',
+          editing: true,
+          hasError: true,
+          product: {
+            title: updatedTitle,
+            imageUrl: updatedImageUrl,
+            price: updatedPrice,
+            description: updatedDesc,
+          },
+          validationErrors: errors.array(),
+          errorMessage: errors.array()[0].msg,
+        });
+      }
 
   Product.findById(prodId)
     .then(product => {
