@@ -23,7 +23,7 @@ router.post(
       .isString()
       .trim()
       .isLength({ min: 3 }),
-    body("imageUrl", 'Image URL must be a valid URL').isURL(),
+    // body("imageUrl", 'Image URL must be a valid URL').isURL(),
     body("price", "Price must be floating point number").isFloat(),
     body("description", "Description must be 5 characters long").isLength({ min: 5, max: 400 }),
   ],
@@ -40,7 +40,6 @@ router.post(
       .isString()
       .trim()
       .isLength({ min: 3 }),
-    body("imageUrl", 'Image URL must be a valid URL').isURL(),
     body("price", "Price must be floating point number").isFloat(),
     body("description", "Description must be 5 characters long").isLength({ min: 5, max: 400 }),
   ],
