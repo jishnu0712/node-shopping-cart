@@ -53,8 +53,8 @@ router.post(
       "Please enter a password with alpha numeric characters and minimum length 4"
     )
       .trim()
-      .isLength({ min: 3 })
-      .isAlphanumeric(),
+      .isLength({ min: 3 }),
+      // .isAlphanumeric(),
     body("confirmPassword").trim().custom((value, { req }) => {
       if (value !== req.body.password) {
         throw new Error("Passwords have to match!");
